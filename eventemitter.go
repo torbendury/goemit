@@ -36,3 +36,8 @@ func (ee *EventEmitter) Off(event string, callback *func(...interface{}) interfa
 	}
 	return false
 }
+
+func (ee *EventEmitter) AllOff() bool {
+	ee.events = make(map[string][]*func(...interface{}) interface{}, 0)
+	return true
+}

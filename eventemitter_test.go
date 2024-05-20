@@ -101,3 +101,33 @@ func TestOffOne(t *testing.T) {
 		t.Error("non-existing callback should not be removable")
 	}
 }
+
+func TestOffAll(t *testing.T) {
+	ee := NewEventEmitter()
+
+	cb := func(...interface{}) interface{} {
+		return nil
+	}
+
+	ee.On("test1", &cb)
+	ee.On("test2", &cb)
+	ee.On("test3", &cb)
+
+	got := len(ee.events)
+
+	want := 3
+
+	if got != want {
+		t.Errorf("got %v want %v", got, want)
+	}
+
+	ee.AllOff()
+
+	got = len(ee.events)
+
+	want = 0
+
+	if got != want {
+		t.Errorf("got %v want %v", got, want)
+	}
+}
