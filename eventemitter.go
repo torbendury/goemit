@@ -43,7 +43,7 @@ func (ee *EventEmitter) Emit(event string, args ...interface{}) {
 	ee.onceEvents = make(map[string][]*func(...interface{}) interface{}, 0)
 }
 
-// Off removes all registered callbacks for a certain event type. Callbacks registered for only-once execution are also removed.
+// Off removes a registered callback for a certain event type. A callback registered for only-once execution is also removed.
 func (ee *EventEmitter) Off(event string, callback *func(...interface{}) interface{}) bool {
 	eventsDone := false
 	onceEventsDone := false
