@@ -131,3 +131,50 @@ func TestOffAll(t *testing.T) {
 		t.Errorf("got %v want %v", got, want)
 	}
 }
+
+func TestOnce(t *testing.T) {
+	ee := NewEventEmitter()
+
+	ch := make(chan string)
+	want := "Event emitted"
+
+	cb := func(input ...interface{}) interface{} {
+		ch, ok := input[0].(chan string)
+		if !ok {
+			t.Error("first argument is not a string channel")
+		}
+		ch <- "Event emitted"
+		return nil
+	}
+
+	ee.Once("test", &cb)
+
+	var got string
+
+	done := make(chan bool)
+
+	go func() {
+		select {
+		case got = <-ch:
+			done <- true
+		case <-time.After(time.Second * 5):
+			done <- false
+		}
+	}()
+
+	ee.Emit("test", ch)
+
+	close(ch)
+
+	if ok := <-done; !ok {
+		t.Fatal("timed out")
+	}
+
+	if got != want {
+		t.Errorf("got %v want %v", got, want)
+	}
+
+	if len(ee.onceEvents) != 0 {
+		t.Errorf("cb is still registered, cb list size %v", len(ee.onceEvents))
+	}
+}
