@@ -25,9 +25,9 @@ func (ee *EventEmitter) String() string {
 
 // On registers a new callback function to a given event type. When an event is emitted,
 // the function receives all arguments that were parsed when emitting.
-func (ee *EventEmitter) On(event string, callback *func(...interface{}) interface{}) bool {
+func (ee *EventEmitter) On(event string, callback *func(...interface{}) interface{}) *EventEmitter {
 	ee.events[event] = append(ee.events[event], callback)
-	return true
+	return ee
 }
 
 // Emit emits a new event on a event type. All existing callbacks, including the ones registered using Once() are called,
@@ -62,16 +62,20 @@ func (ee *EventEmitter) Off(event string, callback *func(...interface{}) interfa
 	return eventsDone || onceEventsDone
 }
 
+func (ee *EventEmitter) EventOff(event string) {
+	ee.events[event] = make([]*func(...interface{}) interface{}, 0)
+	ee.onceEvents[event] = make([]*func(...interface{}) interface{}, 0)
+}
+
 // AllOff removes all registered callbacks for all event types. This is equivalent to re-initializing the EventEmitter.
-func (ee *EventEmitter) AllOff() bool {
+func (ee *EventEmitter) AllOff() {
 	ee.events = make(map[string][]*func(...interface{}) interface{}, 0)
 	ee.onceEvents = make(map[string][]*func(...interface{}) interface{}, 0)
-	return true
 }
 
 // Once registers a callback to be executed only once when a event is emitted.
 // After execution, the callback is automatically removed from the list of registered callbacks.
-func (ee *EventEmitter) Once(event string, callback *func(...interface{}) interface{}) bool {
+func (ee *EventEmitter) Once(event string, callback *func(...interface{}) interface{}) *EventEmitter {
 	ee.onceEvents[event] = append(ee.onceEvents[event], callback)
-	return true
+	return ee
 }

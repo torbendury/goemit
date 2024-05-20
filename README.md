@@ -21,12 +21,11 @@ Here's the short hand information:
 - `Emit(event, args...)` lets the subject emit events to its dependants and calls the registered callback functions with `args`.
 - `Off(event, callback)` removes a given registration for a event. It is looked up by the stored callback function pointer.
 - `AllOff()` removes all registered callbacks for all event types.
+- `EventOff(event)` removes all registered callbacks for a given event type.
 - `Once(event, callback)` registers a callback to be executed only once as soon as the emitter emits an event for it. The callback is removed after execution.
+
+`On()` as well as `Once()` return the EventEmitter itself, enabling chaining methods.
 
 ## License
 
 See [LICENSE](LICENSE).
-
-## TODOs
-
-- Implement deregistration of all callbacks for one event

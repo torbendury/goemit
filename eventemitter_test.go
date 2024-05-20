@@ -24,10 +24,7 @@ func TestOn(t *testing.T) {
 		return fmt.Sprintf("Event emitted, input registered: %s", input)
 	}
 
-	ok := ee.On("test", &cb)
-	if !ok {
-		t.Errorf("could not register callback %T", cb)
-	}
+	ee.On("test", &cb)
 }
 
 func TestEmit(t *testing.T) {
@@ -176,5 +173,37 @@ func TestOnce(t *testing.T) {
 
 	if len(ee.onceEvents) != 0 {
 		t.Errorf("cb is still registered, cb list size %v", len(ee.onceEvents))
+	}
+}
+
+func TestEventOff(t *testing.T) {
+	ee := NewEventEmitter()
+
+	cb := func(...interface{}) interface{} {
+		return nil
+	}
+
+	ee.On("test1", &cb)
+	ee.On("test1", &cb)
+	ee.On("test1", &cb)
+	ee.On("test2", &cb)
+	ee.On("test3", &cb)
+
+	got := len(ee.events["test1"])
+
+	want := 3
+
+	if got != want {
+		t.Errorf("got %v want %v", got, want)
+	}
+
+	ee.EventOff("test1")
+
+	got = len(ee.events["test1"])
+
+	want = 0
+
+	if got != want {
+		t.Errorf("got %v want %v", got, want)
 	}
 }
