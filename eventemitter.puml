@@ -1,0 +1,22 @@
+@startuml
+package goemit {
+annotation . {
+
+
++NewEventEmitter(): *EventEmitter
+}
+class EventEmitter {
+-events: map[string][]*func( ... interface) interface
+-onceEvents: map[string][]*func( ... interface) interface
++String(): string
++On(event string, callback *func( ... interface) interface): *EventEmitter
++Emit(event string, args ... interface)
++Off(event string, callback *func( ... interface) interface): bool
++EventOff(event string)
++AllOff()
++Once(event string, callback *func( ... interface) interface): *EventEmitter
+}
+}
+
+
+@enduml

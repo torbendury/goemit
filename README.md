@@ -29,3 +29,11 @@ Here's the short hand information:
 ## License
 
 See [LICENSE](LICENSE).
+
+## Usage Example
+
+See [example/](example/main.go).
+
+## Building Blocks
+
+![A PlantUML graphic showing the building blocks of goemit](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/torbendury/goemit/main/eventemitter.puml)
