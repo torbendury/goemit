@@ -1,6 +1,6 @@
 @startuml
 package goemit {
-annotation . {
+annotation goemit {
 
 
 +NewEventEmitter(): *EventEmitter
